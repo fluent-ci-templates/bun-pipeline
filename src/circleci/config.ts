@@ -1,5 +1,9 @@
 import { CircleCI, Job } from "fluent_circleci";
 
+/**
+ * Generates CircleCI configuration object.
+ * @returns {CircleCI} CircleCI configuration object.
+ */
 export function generateYaml(): CircleCI {
   const circleci = new CircleCI();
 

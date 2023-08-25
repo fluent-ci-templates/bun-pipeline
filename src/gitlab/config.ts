@@ -1,5 +1,9 @@
 import { GitlabCI, Job } from "fluent_gitlab_ci";
 
+/**
+ * Generates GitLab CI YAML configuration.
+ * @returns {GitlabCI} GitLab CI configuration.
+ */
 export function generateYaml(): GitlabCI {
   const docker = new Job()
     .image("denoland/deno:alpine")

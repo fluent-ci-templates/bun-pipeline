@@ -1,5 +1,9 @@
 import { AzurePipeline } from "fluent_azure_pipelines";
 
+/**
+ * Generates the YAML for the Azure Pipeline.
+ * @returns An instance of AzurePipeline.
+ */
 export function generateYaml(): AzurePipeline {
   const azurePipeline = new AzurePipeline();
 

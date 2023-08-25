@@ -1,5 +1,9 @@
 import { BuildSpec } from "fluent_aws_codepipeline";
 
+/**
+ * Generates a BuildSpec object for AWS CodePipeline.
+ * @returns A BuildSpec object with install, build, and post_build phases.
+ */
 export function generateYaml(): BuildSpec {
   const buildspec = new BuildSpec();
   buildspec
