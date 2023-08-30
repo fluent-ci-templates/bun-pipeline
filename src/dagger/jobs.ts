@@ -52,9 +52,9 @@ export const test = async (client: Client, src = ".") => {
 
 export const run = async (client: Client, command: string, src = ".") => {
   const context = client.host().directory(src);
-  const ctr = withDevbox(
+  let ctr = withDevbox(
     client
-      .pipeline(Job.test)
+      .pipeline(Job.run)
       .container()
       .from("alpine:latest")
       .withExec(["apk", "update"])
@@ -77,8 +77,6 @@ export const run = async (client: Client, command: string, src = ".") => {
       "/root/.bun/install/cache",
       client.cacheVolume("bun-cache")
     )
-    .withMountedCache("/app/build", client.cacheVolume("bun-build-dir"))
-    .withMountedCache("/app/dist", client.cacheVolume("bun-dist-dir"))
     .withMountedCache("/app/node_modules", client.cacheVolume("node_modules"))
     .withEnvVariable("NIX_INSTALLER_NO_CHANNEL_ADD", "1")
     .withDirectory("/app", context, {
@@ -91,6 +89,14 @@ export const run = async (client: Client, command: string, src = ".") => {
       "-c",
       `eval "$(devbox global shellenv)" && bun run ${command}`,
     ]);
+
+  if (command === "build") {
+    ctr = ctr
+      .withExec(["mkdir", "-p", "/app/dist"])
+      .withExec(["mkdir", "-p", "/app/build"]);
+    await ctr.directory("/app/dist").export("./dist");
+    await ctr.directory("/app/build").export("./build");
+  }
 
   const result = await ctr.stdout();
 
