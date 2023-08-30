@@ -6,7 +6,7 @@ export enum Job {
   run = "run",
 }
 
-const BUN_VERSION = Deno.env.get("BUN_VERISON") || "0.7.0";
+const BUN_VERSION = Deno.env.get("BUN_VERSION") || "0.7.0";
 const NODE_VERSION = Deno.env.get("NODE_VERSION") || "18.16.1";
 
 export const test = async (client: Client, src = ".") => {
