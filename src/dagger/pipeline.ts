@@ -1,4 +1,4 @@
-import Client, { connect } from "@dagger.io/dagger";
+import Client, { connect } from "@fluentci.io/dagger";
 import * as jobs from "./jobs.ts";
 
 const { test, runnableJobs } = jobs;
@@ -16,10 +16,10 @@ export default function pipeline(_src = ".", args: string[] = []) {
 
 async function runSpecificJobs(client: Client, args: jobs.Job[]) {
   for (const name of args) {
-    const job = runnableJobs[name];
+    const job = runnableJobs["run"];
     if (!job) {
       throw new Error(`Job ${name} not found`);
     }
-    await job(client);
+    await job(client, name);
   }
 }
