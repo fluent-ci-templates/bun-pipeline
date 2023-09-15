@@ -54,7 +54,7 @@ You can also use this pipeline programmatically:
 
 ```ts
 import Client, { connect } from "https://sdk.fluentci.io/v0.1.7/mod.ts";
-import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.2.0/mod.ts";
+import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.2.1/mod.ts";
 
 function pipeline(src = ".") {
   connect(async (client: Client) => {
