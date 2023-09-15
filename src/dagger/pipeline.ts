@@ -23,6 +23,6 @@ async function runSpecificJobs(client: Client, args: jobs.Job[]) {
     if (!job) {
       await runnableJobs.run(client, name);
     }
-    await job(client, name);
+    await job(client, ".");
   }
 }
