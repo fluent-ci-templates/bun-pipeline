@@ -19,9 +19,9 @@ export default async function pipeline(src = ".", args: string[] = []) {
 
 async function runSpecificJobs(client: Client, args: jobs.Job[]) {
   for (const name of args) {
-    const job = runnableJobs["run"];
+    const job = runnableJobs[name];
     if (!job) {
-      throw new Error(`Job ${name} not found`);
+      await runnableJobs.run(client, name);
     }
     await job(client, name);
   }
