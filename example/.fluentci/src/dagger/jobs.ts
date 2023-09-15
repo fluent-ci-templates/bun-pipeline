@@ -1,5 +1,4 @@
-import Client from "@dagger.io/dagger";
-import { withDevbox } from "https://deno.land/x/nix_installer_pipeline@v0.3.6/src/dagger/steps.ts";
+import Client from "@fluentci.io/dagger";
 
 export enum Job {
   test = "test",
@@ -9,22 +8,14 @@ export enum Job {
 const BUN_VERSION = Deno.env.get("BUN_VERSION") || "0.7.0";
 const NODE_VERSION = Deno.env.get("NODE_VERSION") || "18.16.1";
 
+export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
+
 export const test = async (client: Client, src = ".") => {
   const context = client.host().directory(src);
-  const ctr = withDevbox(
-    client
-      .pipeline(Job.test)
-      .container()
-      .from("alpine:latest")
-      .withExec(["apk", "update"])
-      .withExec(["apk", "add", "curl", "bash"])
-      .withMountedCache("/nix", client.cacheVolume("nix"))
-      .withMountedCache("/etc/nix", client.cacheVolume("nix-etc"))
-  )
-    .withMountedCache(
-      "/root/.local/share/devbox/global",
-      client.cacheVolume("devbox-global")
-    )
+  const ctr = client
+    .pipeline(Job.test)
+    .container()
+    .from("ghcr.io/fluent-ci-templates/devbox:latest")
     .withExec([
       "devbox",
       "global",
@@ -38,9 +29,7 @@ export const test = async (client: Client, src = ".") => {
     )
     .withMountedCache("/app/node_modules", client.cacheVolume("node_modules"))
     .withEnvVariable("NIX_INSTALLER_NO_CHANNEL_ADD", "1")
-    .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", "node_modules", ".fluentci"],
-    })
+    .withDirectory("/app", context, { exclude })
     .withWorkdir("/app")
     .withExec(["sh", "-c", 'eval "$(devbox global shellenv)" && bun install'])
     .withExec(["sh", "-c", 'eval "$(devbox global shellenv)" && bun test']);
@@ -52,20 +41,10 @@ export const test = async (client: Client, src = ".") => {
 
 export const run = async (client: Client, command: string, src = ".") => {
   const context = client.host().directory(src);
-  let ctr = withDevbox(
-    client
-      .pipeline(Job.run)
-      .container()
-      .from("alpine:latest")
-      .withExec(["apk", "update"])
-      .withExec(["apk", "add", "curl", "bash"])
-      .withMountedCache("/nix", client.cacheVolume("nix"))
-      .withMountedCache("/etc/nix", client.cacheVolume("nix-etc"))
-  )
-    .withMountedCache(
-      "/root/.local/share/devbox/global",
-      client.cacheVolume("devbox-global")
-    )
+  let ctr = client
+    .pipeline(Job.run)
+    .container()
+    .from("ghcr.io/fluent-ci-templates/devbox:latest")
     .withExec([
       "devbox",
       "global",
@@ -79,9 +58,7 @@ export const run = async (client: Client, command: string, src = ".") => {
     )
     .withMountedCache("/app/node_modules", client.cacheVolume("node_modules"))
     .withEnvVariable("NIX_INSTALLER_NO_CHANNEL_ADD", "1")
-    .withDirectory("/app", context, {
-      exclude: [".git", ".devbox", "node_modules", ".fluentci"],
-    })
+    .withDirectory("/app", context, { exclude })
     .withWorkdir("/app")
     .withExec(["sh", "-c", 'eval "$(devbox global shellenv)" && bun install'])
     .withExec([

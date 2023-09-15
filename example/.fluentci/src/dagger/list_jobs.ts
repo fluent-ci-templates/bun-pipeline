@@ -3,7 +3,7 @@ import { runnableJobs, jobDescriptions, Job } from "./jobs.ts";
 import { stringifyTree } from "https://esm.sh/stringify-tree@1.1.1";
 
 const tree = {
-  name: brightGreen("base_pipeline"),
+  name: brightGreen("bun_pipeline"),
   children: (Object.keys(runnableJobs) as Job[]).map((job) => ({
     name: jobDescriptions[job]
       ? `${brightGreen(job)} - ${jobDescriptions[job]}`
