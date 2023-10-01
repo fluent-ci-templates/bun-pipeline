@@ -1,4 +1,4 @@
-import Client from "../../deps.ts";
+import { client } from "./dagger.ts";
 
 export enum Job {
   test = "test",
@@ -10,7 +10,7 @@ const NODE_VERSION = Deno.env.get("NODE_VERSION") || "18.16.1";
 
 export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
 
-export const test = async (client: Client, src = ".") => {
+export const test = async (src = ".") => {
   const context = client.host().directory(src);
   const ctr = client
     .pipeline(Job.test)
@@ -37,9 +37,11 @@ export const test = async (client: Client, src = ".") => {
   const result = await ctr.stdout();
 
   console.log(result);
+
+  return "All tests passed";
 };
 
-export const run = async (client: Client, command: string, src = ".") => {
+export const run = async (command: string, src = ".") => {
   const context = client.host().directory(src);
   let ctr = client
     .pipeline(Job.run)
@@ -78,11 +80,13 @@ export const run = async (client: Client, command: string, src = ".") => {
   const result = await ctr.stdout();
 
   console.log(result);
+
+  return "Command executed";
 };
 
 export type JobExec =
-  | ((client: Client, src?: string) => Promise<void>)
-  | ((client: Client, command: string, src?: string) => Promise<void>);
+  | ((src?: string) => Promise<string>)
+  | ((command: string, src?: string) => Promise<string>);
 
 export const runnableJobs: Record<Job, JobExec> = {
   [Job.test]: test,
