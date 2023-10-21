@@ -46,7 +46,19 @@ fluentci
 
 | Job    | Description         |
 | ------ | ------------------- |
+| run    | Run a command       |
 | test   | Run the tests       |
+
+```graphql
+
+run(
+  bunVersion: String!, 
+  command: String!, 
+  src: String!
+): String
+
+test(bunVersion: String!, src: String!): String
+```
 
 ## Programmatic usage
 
