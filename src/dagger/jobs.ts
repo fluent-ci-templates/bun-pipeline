@@ -16,12 +16,13 @@ export const test = async (src = ".") => {
     const ctr = client
       .pipeline(Job.test)
       .container()
-      .from("ghcr.io/fluent-ci-templates/devbox:latest")
+      .from("pkgxdev/pkgx:latest")
+      .withExec(["apt-get", "update"])
+      .withExec(["apt-get", "install", "-y", "ca-certificates"])
       .withExec([
-        "devbox",
-        "global",
-        "add",
-        `nodejs@${NODE_VERSION}`,
+        "pkgx",
+        "install",
+        `node@${NODE_VERSION}`,
         `bun@${BUN_VERSION}`,
       ])
       .withMountedCache(
@@ -29,11 +30,10 @@ export const test = async (src = ".") => {
         client.cacheVolume("bun-cache")
       )
       .withMountedCache("/app/node_modules", client.cacheVolume("node_modules"))
-      .withEnvVariable("NIX_INSTALLER_NO_CHANNEL_ADD", "1")
       .withDirectory("/app", context, { exclude })
       .withWorkdir("/app")
-      .withExec(["sh", "-c", 'eval "$(devbox global shellenv)" && bun install'])
-      .withExec(["sh", "-c", 'eval "$(devbox global shellenv)" && bun test']);
+      .withExec(["bun", "install"])
+      .withExec(["bun", "test"]);
 
     const result = await ctr.stdout();
 
@@ -48,12 +48,13 @@ export const run = async (command: string, src = ".") => {
     let ctr = client
       .pipeline(Job.run)
       .container()
-      .from("ghcr.io/fluent-ci-templates/devbox:latest")
+      .from("pkgxdev/pkgx:latest")
+      .withExec(["apt-get", "update"])
+      .withExec(["apt-get", "install", "-y", "ca-certificates"])
       .withExec([
-        "devbox",
-        "global",
-        "add",
-        `nodejs@${NODE_VERSION}`,
+        "pkgx",
+        "install",
+        `node@${NODE_VERSION}}`,
         `bun@${BUN_VERSION}`,
       ])
       .withMountedCache(
@@ -61,15 +62,10 @@ export const run = async (command: string, src = ".") => {
         client.cacheVolume("bun-cache")
       )
       .withMountedCache("/app/node_modules", client.cacheVolume("node_modules"))
-      .withEnvVariable("NIX_INSTALLER_NO_CHANNEL_ADD", "1")
       .withDirectory("/app", context, { exclude })
       .withWorkdir("/app")
-      .withExec(["sh", "-c", 'eval "$(devbox global shellenv)" && bun install'])
-      .withExec([
-        "sh",
-        "-c",
-        `eval "$(devbox global shellenv)" && bun run ${command}`,
-      ]);
+      .withExec(["bun", "install"])
+      .withExec(["bun", "run", command]);
 
     if (command === "build") {
       ctr = ctr
