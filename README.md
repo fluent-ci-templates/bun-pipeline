@@ -40,7 +40,7 @@ fluentci
 | Variable     | Description                                      |
 | ------------ | ------------------------------------------------ |
 | NODE_VERSION | The Node.js version to use. Defaults to `18.16.1`|
-| BUN_VERSION  | The Bun version to use. Defaults to `0.7.0`      |
+| BUN_VERSION  | The Bun version to use. Defaults to `1.0.3`      |
 
 ## Jobs
 
