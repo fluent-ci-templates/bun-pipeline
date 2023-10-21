@@ -5,12 +5,12 @@ export enum Job {
   run = "run",
 }
 
-const BUN_VERSION = Deno.env.get("BUN_VERSION") || "0.7.0";
 const NODE_VERSION = Deno.env.get("NODE_VERSION") || "18.16.1";
 
 export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
 
-export const test = async (src = ".") => {
+export const test = async (src = ".", bunVersion?: string) => {
+  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
   await connect(async (client: Client) => {
     const context = client.host().directory(src);
     const ctr = client
@@ -42,7 +42,8 @@ export const test = async (src = ".") => {
   return "All tests passed";
 };
 
-export const run = async (command: string, src = ".") => {
+export const run = async (command: string, src = ".", bunVersion?: string) => {
+  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
   await connect(async (client: Client) => {
     const context = client.host().directory(src);
     let ctr = client
@@ -83,8 +84,8 @@ export const run = async (command: string, src = ".") => {
 };
 
 export type JobExec =
-  | ((src?: string) => Promise<string>)
-  | ((command: string, src?: string) => Promise<string>);
+  | ((src?: string, bunVersion?: string) => Promise<string>)
+  | ((command: string, src?: string, bunVersion?: string) => Promise<string>);
 
 export const runnableJobs: Record<Job, JobExec> = {
   [Job.test]: test,

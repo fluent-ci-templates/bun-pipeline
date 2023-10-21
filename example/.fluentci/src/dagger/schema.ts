@@ -15,15 +15,19 @@ const Query = queryType({
     t.string("test", {
       args: {
         src: nonNull(stringArg()),
+        bunVersion: nonNull(stringArg()),
       },
-      resolve: async (_root, args, _ctx) => await test(args.src),
+      resolve: async (_root, args, _ctx) =>
+        await test(args.src, args.bunVersion),
     });
     t.string("run", {
       args: {
         command: nonNull(stringArg()),
         src: nonNull(stringArg()),
+        bunVersion: nonNull(stringArg()),
       },
-      resolve: async (_root, args, _ctx) => await run(args.command, args.src),
+      resolve: async (_root, args, _ctx) =>
+        await run(args.command, args.src, args.bunVersion),
     });
   },
 });

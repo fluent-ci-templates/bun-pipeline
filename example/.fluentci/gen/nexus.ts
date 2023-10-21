@@ -58,10 +58,12 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Query: {
     run: { // args
+      bunVersion: string; // String!
       command: string; // String!
       src: string; // String!
     }
     test: { // args
+      bunVersion: string; // String!
       src: string; // String!
     }
   }

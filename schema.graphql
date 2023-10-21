@@ -3,6 +3,6 @@
 
 
 type Query {
-  run(command: String!, src: String!): String
-  test(src: String!): String
+  run(bunVersion: String!, command: String!, src: String!): String
+  test(bunVersion: String!, src: String!): String
 }
