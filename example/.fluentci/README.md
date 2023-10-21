@@ -12,7 +12,7 @@ A ready-to-use CI/CD Pipeline for your [Bun](https://bun.sh) projects.
 Run the following command:
 
 ```bash
-dagger run fluentci bun_pipeline
+fluentci run bun_pipeline
 ```
 
 Or, if you want to use it as a template:
@@ -26,7 +26,7 @@ This will create a `.fluentci` folder in your project.
 Now you can run the pipeline with:
 
 ```bash
-dagger run fluentci .
+fluentci run .
 ```
 
 Or simply:
@@ -53,8 +53,8 @@ fluentci
 You can also use this pipeline programmatically:
 
 ```ts
-import Client, { connect } from "https://sdk.fluentci.io/v0.1.7/mod.ts";
-import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.2.0/mod.ts";
+import Client, { connect } from "https://sdk.fluentci.io/v0.1.9/mod.ts";
+import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.2.2/mod.ts";
 
 function pipeline(src = ".") {
   connect(async (client: Client) => {

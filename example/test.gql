@@ -1,0 +1,5 @@
+{
+  bun {
+    test(src: ".", bunVersion: "1.0.3")
+  }
+}
