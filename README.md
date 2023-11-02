@@ -65,7 +65,7 @@ test(bunVersion: String!, src: String!): String
 You can also use this pipeline programmatically:
 
 ```ts
-import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.3.1/mod.ts";
+import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.3.3/mod.ts";
 
 await test();
 ```
