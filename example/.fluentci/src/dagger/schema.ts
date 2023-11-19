@@ -14,17 +14,17 @@ const Query = queryType({
   definition(t) {
     t.string("test", {
       args: {
-        src: nonNull(stringArg()),
-        bunVersion: nonNull(stringArg()),
+        src: stringArg(),
+        bunVersion: stringArg(),
       },
       resolve: async (_root, args, _ctx) =>
-        await test(args.src, args.bunVersion),
+        await test(args.src || undefined, args.bunVersion),
     });
     t.string("run", {
       args: {
         command: nonNull(stringArg()),
-        src: nonNull(stringArg()),
-        bunVersion: nonNull(stringArg()),
+        src: stringArg(),
+        bunVersion: stringArg(),
       },
       resolve: async (_root, args, _ctx) =>
         await run(args.command, args.src, args.bunVersion),

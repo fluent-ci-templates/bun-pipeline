@@ -58,13 +58,13 @@ export interface NexusGenFieldTypeNames {
 export interface NexusGenArgTypes {
   Query: {
     run: { // args
-      bunVersion: string; // String!
+      bunVersion?: string | null; // String
       command: string; // String!
-      src: string; // String!
+      src?: string | null; // String
     }
     test: { // args
-      bunVersion: string; // String!
-      src: string; // String!
+      bunVersion?: string | null; // String
+      src?: string | null; // String
     }
   }
 }

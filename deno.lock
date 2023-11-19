@@ -261,6 +261,8 @@
     "https://esm.sh/v134/yallist@4.0.0/denonext/yallist.mjs": "61f180d807dda50bac17028eda05d5722a3fecef6e98a9064e2353ea6864fd82",
     "https://esm.sh/v134/yaml@2.3.1/denonext/yaml.mjs": "71f677b4bfc69271af9d98db5194e354f9a1863955e208e26d32a9ef78bd89f5",
     "https://esm.sh/yaml@v2.3.1": "9689357882f365e29af1f7b2015cd08c7e01fe5d0a8363132216b6b9b905a337",
+    "https://nix.fluentci.io/v0.5.3/deps.ts": "469c1f084eda8d2ee78135b0bf4f9490b80b36d8d0bdb88594167133a918da8e",
+    "https://nix.fluentci.io/v0.5.3/src/dagger/steps.ts": "b766f4fa9624a032e7af884a5ca47bc666a529c4a472d38b74b55ca0d63cf81d",
     "https://sdk.fluentci.io/v0.3.0/deps.ts": "3a145e76b4345a9a7888f09b1b48cb54523ebfa43247a1abebc40a9e82d555f4",
     "https://sdk.fluentci.io/v0.3.0/mod.ts": "261ba81a4728f5def4e327a5cd80664ea8449515a2f4eea5f3f416acae39a1fa",
     "https://sdk.fluentci.io/v0.3.0/src/client.ts": "7f1df4b1fee62dd6f946fa9d15d47a37b938ffb4ac91faf3d39b44b83d4f5921",
