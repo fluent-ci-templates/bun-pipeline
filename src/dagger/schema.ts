@@ -18,7 +18,7 @@ const Query = queryType({
         bunVersion: stringArg(),
       },
       resolve: async (_root, args, _ctx) =>
-        await test(args.src || undefined, args.bunVersion),
+        await test(args.src || undefined, args.bunVersion || undefined),
     });
     t.string("run", {
       args: {
@@ -27,15 +27,26 @@ const Query = queryType({
         bunVersion: stringArg(),
       },
       resolve: async (_root, args, _ctx) =>
-        await run(args.command, args.src, args.bunVersion),
+        await run(
+          args.command,
+          args.src || undefined,
+          args.bunVersion || undefined
+        ),
     });
   },
 });
 
-export const schema = makeSchema({
+const schema = makeSchema({
   types: [Query],
   outputs: {
     schema: resolve(join(dirname(".."), dirname(".."), "schema.graphql")),
     typegen: resolve(join(dirname(".."), dirname(".."), "gen", "nexus.ts")),
   },
 });
+
+schema.description = JSON.stringify({
+  "test.src": "directory",
+  "run.src": "directory",
+});
+
+export { schema };

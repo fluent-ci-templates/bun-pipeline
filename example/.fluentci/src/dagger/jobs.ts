@@ -1,5 +1,6 @@
-import Client from "../../deps.ts";
+import Client, { Directory } from "../../deps.ts";
 import { connect } from "../../sdk/connect.ts";
+import { getDirectory } from "./lib.ts";
 
 export enum Job {
   test = "test",
@@ -10,10 +11,13 @@ const NODE_VERSION = Deno.env.get("NODE_VERSION") || "18.16.1";
 
 export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
 
-export const test = async (src = ".", bunVersion?: string) => {
+export const test = async (
+  src: string | Directory | undefined = ".",
+  bunVersion?: string
+) => {
   const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
   await connect(async (client: Client) => {
-    const context = client.host().directory(src);
+    const context = getDirectory(client, src);
     const ctr = client
       .pipeline(Job.test)
       .container()
@@ -43,10 +47,14 @@ export const test = async (src = ".", bunVersion?: string) => {
   return "All tests passed";
 };
 
-export const run = async (command: string, src = ".", bunVersion?: string) => {
+export const run = async (
+  command: string,
+  src: string | Directory | undefined = ".",
+  bunVersion?: string
+) => {
   const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
   await connect(async (client: Client) => {
-    const context = client.host().directory(src);
+    const context = getDirectory(client, src);
     let ctr = client
       .pipeline(Job.run)
       .container()
