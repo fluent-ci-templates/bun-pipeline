@@ -52,12 +52,12 @@ fluentci
 ```graphql
 
 run(
-  bunVersion: String!, 
+  bunVersion: String, 
   command: String!, 
-  src: String!
+  src: String
 ): String
 
-test(bunVersion: String!, src: String!): String
+test(bunVersion: String, src: String): String
 ```
 
 ## Programmatic usage
