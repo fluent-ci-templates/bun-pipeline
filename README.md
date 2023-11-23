@@ -35,6 +35,14 @@ Or simply:
 fluentci
 ```
 
+## Dagger Module
+
+Use as a [Dagger](https://dagger.io) Module:
+
+```bash
+dagger mod install github.com/fluent-ci-templates/bun-pipeline@mod
+```
+
 ## Environment variables
 
 | Variable     | Description                                      |
