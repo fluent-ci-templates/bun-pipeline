@@ -14,8 +14,8 @@ export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
 /**
  * @function
  * @description Run tests
- * @param src {string | Directory | undefined}
- * @param bunVersion {string}
+ * @param {string | Directory | undefined} src
+ * @param {string} bunVersion
  * @returns {string}
  */
 export async function test(
@@ -57,9 +57,9 @@ export async function test(
 /**
  * @function
  * @description Run commands
- * @param command {string}
- * @param src {string | Directory | undefined}
- * @param bunVersion {string}
+ * @param {string} command
+ * @param {string | Directory | undefined} src
+ * @param {string} bunVersion
  * @returns {string}
  */
 export async function run(
