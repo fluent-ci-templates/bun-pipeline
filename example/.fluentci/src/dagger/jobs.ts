@@ -11,10 +11,17 @@ const NODE_VERSION = Deno.env.get("NODE_VERSION") || "18.16.1";
 
 export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
 
-export const test = async (
+/**
+ * @function
+ * @description Run tests
+ * @param src {string | Directory | undefined}
+ * @param bunVersion {string}
+ * @returns {string}
+ */
+export async function test(
   src: string | Directory | undefined = ".",
   bunVersion?: string
-) => {
+): Promise<string> {
   const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
   await connect(async (client: Client) => {
     const context = getDirectory(client, src);
@@ -45,13 +52,21 @@ export const test = async (
     console.log(result);
   });
   return "All tests passed";
-};
+}
 
-export const run = async (
+/**
+ * @function
+ * @description Run commands
+ * @param command {string}
+ * @param src {string | Directory | undefined}
+ * @param bunVersion {string}
+ * @returns {string}
+ */
+export async function run(
   command: string,
   src: string | Directory | undefined = ".",
   bunVersion?: string
-) => {
+): Promise<string> {
   const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
   await connect(async (client: Client) => {
     const context = getDirectory(client, src);
@@ -90,7 +105,7 @@ export const run = async (
     console.log(result);
   });
   return "Command executed";
-};
+}
 
 export type JobExec =
   | ((src?: string, bunVersion?: string) => Promise<string>)

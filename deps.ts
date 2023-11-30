@@ -3,22 +3,13 @@ import { Client } from "./sdk/client.gen.ts";
 export default Client;
 
 export type { DirectoryID } from "./sdk/client.gen.ts";
-export { Directory } from "./sdk/client.gen.ts";
+export { Directory, Container } from "./sdk/client.gen.ts";
 export { connect, uploadContext } from "https://sdk.fluentci.io/v0.3.0/mod.ts";
 export { brightGreen } from "https://deno.land/std@0.191.0/fmt/colors.ts";
 export { withDevbox } from "https://nix.fluentci.io/v0.5.3/src/dagger/steps.ts";
 export { stringifyTree } from "https://esm.sh/stringify-tree@1.1.1";
 import gql from "https://esm.sh/graphql-tag@2.12.6";
 export { gql };
-export {
-  arg,
-  queryType,
-  stringArg,
-  booleanArg,
-  intArg,
-  nonNull,
-  makeSchema,
-} from "npm:nexus";
 export {
   dirname,
   join,
