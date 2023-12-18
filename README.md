@@ -57,15 +57,18 @@ dagger mod install github.com/fluent-ci-templates/bun-pipeline@mod
 | run    | Run a command       |
 | test   | Run the tests       |
 
-```graphql
+```typescript
+test(
+  src: string | Directory | undefined = ".",
+  bunVersion?: string
+): Promise<string>
 
 run(
-  bunVersion: String, 
-  command: String!, 
-  src: String
-): String
+  command: string,
+  src: string | Directory | undefined = ".",
+  bunVersion?: string
+): Promise<string>
 
-test(bunVersion: String, src: String): String
 ```
 
 ## Programmatic usage
@@ -73,7 +76,7 @@ test(bunVersion: String, src: String): String
 You can also use this pipeline programmatically:
 
 ```ts
-import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.5.0/mod.ts";
+import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.6.0/mod.ts";
 
 await test();
 ```
