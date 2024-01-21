@@ -7,6 +7,8 @@
 
 A ready-to-use CI/CD Pipeline for your [Bun](https://bun.sh) projects.
 
+![Made with VHS](https://vhs.charm.sh/vhs-2vYAlYsrKSytuEyoxMfYdg.gif)
+
 ## 🚀 Usage
 
 Run the following command:
@@ -76,7 +78,7 @@ run(
 You can also use this pipeline programmatically:
 
 ```ts
-import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.6.0/mod.ts";
+import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.6.1/mod.ts";
 
 await test();
 ```
