@@ -23,8 +23,9 @@ export async function test(
   bunVersion?: string
 ): Promise<string> {
   const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
+  let result = "";
   await connect(async (client: Client) => {
-    const context = getDirectory(client, src);
+    const context = await getDirectory(client, src);
     const ctr = client
       .pipeline(Job.test)
       .container()
@@ -47,11 +48,9 @@ export async function test(
       .withExec(["bun", "install"])
       .withExec(["bun", "test"]);
 
-    const result = await ctr.stdout();
-
-    console.log(result);
+    result = await ctr.stdout();
   });
-  return "All tests passed";
+  return result;
 }
 
 /**
@@ -68,8 +67,9 @@ export async function run(
   bunVersion?: string
 ): Promise<string> {
   const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
+  let result = "";
   await connect(async (client: Client) => {
-    const context = getDirectory(client, src);
+    const context = await getDirectory(client, src);
     let ctr = client
       .pipeline(Job.run)
       .container()
@@ -100,11 +100,9 @@ export async function run(
       await ctr.directory("/app/build").export("./build");
     }
 
-    const result = await ctr.stdout();
-
-    console.log(result);
+    result = await ctr.stdout();
   });
-  return "Command executed";
+  return result;
 }
 
 export type JobExec =
