@@ -22,7 +22,7 @@ export async function test(
   src: string | Directory | undefined = ".",
   bunVersion?: string
 ): Promise<string> {
-  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
+  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.25";
   let result = "";
   await connect(async (client: Client) => {
     const context = await getDirectory(client, src);
@@ -66,7 +66,7 @@ export async function run(
   src: string | Directory | undefined = ".",
   bunVersion?: string
 ): Promise<string> {
-  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
+  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.25";
   let result = "";
   await connect(async (client: Client) => {
     const context = await getDirectory(client, src);
