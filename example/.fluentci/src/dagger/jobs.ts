@@ -14,8 +14,8 @@ export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
 /**
  * @function
  * @description Run tests
- * @param src {string | Directory | undefined}
- * @param bunVersion {string}
+ * @param {string | Directory | undefined} src
+ * @param {string} bunVersion
  * @returns {string}
  */
 export async function test(
@@ -23,8 +23,9 @@ export async function test(
   bunVersion?: string
 ): Promise<string> {
   const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
+  let result = "";
   await connect(async (client: Client) => {
-    const context = getDirectory(client, src);
+    const context = await getDirectory(client, src);
     const ctr = client
       .pipeline(Job.test)
       .container()
@@ -47,19 +48,17 @@ export async function test(
       .withExec(["bun", "install"])
       .withExec(["bun", "test"]);
 
-    const result = await ctr.stdout();
-
-    console.log(result);
+    result = await ctr.stdout();
   });
-  return "All tests passed";
+  return result;
 }
 
 /**
  * @function
  * @description Run commands
- * @param command {string}
- * @param src {string | Directory | undefined}
- * @param bunVersion {string}
+ * @param {string} command
+ * @param {string | Directory | undefined} src
+ * @param {string} bunVersion
  * @returns {string}
  */
 export async function run(
@@ -68,8 +67,9 @@ export async function run(
   bunVersion?: string
 ): Promise<string> {
   const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
+  let result = "";
   await connect(async (client: Client) => {
-    const context = getDirectory(client, src);
+    const context = await getDirectory(client, src);
     let ctr = client
       .pipeline(Job.run)
       .container()
@@ -100,11 +100,9 @@ export async function run(
       await ctr.directory("/app/build").export("./build");
     }
 
-    const result = await ctr.stdout();
-
-    console.log(result);
+    result = await ctr.stdout();
   });
-  return "Command executed";
+  return result;
 }
 
 export type JobExec =
