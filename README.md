@@ -50,7 +50,7 @@ dagger mod install github.com/fluent-ci-templates/bun-pipeline@mod
 | Variable     | Description                                      |
 | ------------ | ------------------------------------------------ |
 | NODE_VERSION | The Node.js version to use. Defaults to `18.16.1`|
-| BUN_VERSION  | The Bun version to use. Defaults to `1.0.3`      |
+| BUN_VERSION  | The Bun version to use. Defaults to `latest`      |
 
 ## Jobs
 
