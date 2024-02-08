@@ -20,9 +20,9 @@ export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
  */
 export async function test(
   src: string | Directory | undefined = ".",
-  bunVersion?: string
+  bunVersion = "latest"
 ): Promise<string> {
-  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.25";
+  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion;
   let result = "";
   await connect(async (client: Client) => {
     const context = await getDirectory(client, src);
@@ -64,9 +64,9 @@ export async function test(
 export async function run(
   command: string,
   src: string | Directory | undefined = ".",
-  bunVersion?: string
+  bunVersion = "latest"
 ): Promise<string> {
-  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.25";
+  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion;
   let result = "";
   await connect(async (client: Client) => {
     const context = await getDirectory(client, src);
