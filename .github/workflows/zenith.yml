@@ -20,3 +20,5 @@ jobs:
         run: |
           dagger call test --src .
         working-directory: example
+        env:
+          DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}
