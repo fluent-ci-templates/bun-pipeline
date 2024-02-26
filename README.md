@@ -80,7 +80,7 @@ run(
 You can also use this pipeline programmatically:
 
 ```ts
-import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.6.5/mod.ts";
+import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.6.6/mod.ts";
 
 await test();
 ```

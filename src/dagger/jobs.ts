@@ -39,11 +39,6 @@ export async function test(
         `node@${NODE_VERSION}`,
         `bun@${BUN_VERSION}`,
       ])
-      .withMountedCache(
-        "/root/.bun/install/cache",
-        client.cacheVolume("bun-cache")
-      )
-      .withMountedCache("/app/node_modules", client.cacheVolume("node_modules"))
       .withDirectory("/app", context, { exclude })
       .withWorkdir("/app")
       .withExec(["bun", "install"])
@@ -83,11 +78,6 @@ export async function run(
         `node@${NODE_VERSION}}`,
         `bun@${BUN_VERSION}`,
       ])
-      .withMountedCache(
-        "/root/.bun/install/cache",
-        client.cacheVolume("bun-cache")
-      )
-      .withMountedCache("/app/node_modules", client.cacheVolume("node_modules"))
       .withDirectory("/app", context, { exclude })
       .withWorkdir("/app")
       .withExec(["bun", "install"])
