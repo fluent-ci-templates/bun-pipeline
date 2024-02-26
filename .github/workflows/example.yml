@@ -14,7 +14,8 @@ jobs:
         uses: fluentci-io/setup-fluentci@v4
       - name: Run Dagger Pipelines
         run: |
-          dagger run deno run -A ../src/dagger/runner.ts
+          dagger run deno run -A ../src/dagger/runner.ts test
+          dagger run deno run -A ../src/dagger/runner.ts run build
         working-directory: example
         env:
           DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}
