@@ -5,7 +5,6 @@
 ![deno compatibility](https://shield.deno.dev/deno/^1.37)
 [![codecov](https://img.shields.io/codecov/c/gh/fluent-ci-templates/bun-pipeline)](https://codecov.io/gh/fluent-ci-templates/bun-pipeline)
 
-[![CodeSee](https://codesee-docs.s3.amazonaws.com/badge.svg?)](https://app.codesee.io/maps/public/23a379e0-c655-11ee-95ac-897807a2630c)
 
 A ready-to-use CI/CD Pipeline for your [Bun](https://bun.sh) projects.
 
@@ -44,7 +43,14 @@ fluentci
 Use as a [Dagger](https://dagger.io) Module:
 
 ```bash
-dagger mod install github.com/fluent-ci-templates/bun-pipeline@mod
+dagger install github.com/fluent-ci-templates/bun-pipeline@main
+```
+
+Call a function from the module:
+
+```bash
+dagger call test --src .
+dagger call run --command build --src .
 ```
 
 ## Environment variables
