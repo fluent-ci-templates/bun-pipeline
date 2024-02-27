@@ -5,7 +5,6 @@
 ![deno compatibility](https://shield.deno.dev/deno/^1.37)
 [![codecov](https://img.shields.io/codecov/c/gh/fluent-ci-templates/bun-pipeline)](https://codecov.io/gh/fluent-ci-templates/bun-pipeline)
 
-
 A ready-to-use CI/CD Pipeline for your [Bun](https://bun.sh) projects.
 
 ![Made with VHS](https://vhs.charm.sh/vhs-2vYAlYsrKSytuEyoxMfYdg.gif)
@@ -86,7 +85,7 @@ run(
 You can also use this pipeline programmatically:
 
 ```ts
-import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.6.6/mod.ts";
+import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.6.7/mod.ts";
 
 await test();
 ```
