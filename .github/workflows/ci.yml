@@ -13,7 +13,9 @@ jobs:
       - name: Setup Fluent CI
         uses: fluentci-io/setup-fluentci@v4
       - name: Run Dagger Pipelines
-        run: fluentci run deno_pipeline fmt lint test
+        run: |
+          fluentci run deno_pipeline fmt lint test
+          dagger -m github.com/fluent-ci-templates/bun-pipeline@main functions
       - name: Upload Coverage
         run: fluentci run codecov_pipeline
         env:

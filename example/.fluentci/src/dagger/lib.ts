@@ -1,17 +1,24 @@
-import Client, { Directory, DirectoryID } from "../../deps.ts";
+import { Directory, DirectoryID } from "../../deps.ts";
+import { dag } from "../../sdk/client.gen.ts";
 
 export const getDirectory = async (
-  client: Client,
   src: string | Directory | undefined = "."
 ) => {
+  if (src instanceof Directory) {
+    return src;
+  }
   if (typeof src === "string") {
-    const directory = client.loadDirectoryFromID(src as DirectoryID);
     try {
+      const directory = dag.loadDirectoryFromID(src as DirectoryID);
       await directory.id();
       return directory;
     } catch (_) {
-      return client.host().directory(src);
+      return dag.host
+        ? dag.host().directory(src)
+        : dag.currentModule().source().directory(src);
     }
   }
-  return src instanceof Directory ? src : client.host().directory(src);
+  return dag.host
+    ? dag.host().directory(src)
+    : dag.currentModule().source().directory(src);
 };

@@ -1,5 +1,5 @@
-import Client, { Directory } from "../../deps.ts";
-import { connect } from "../../sdk/connect.ts";
+import { Directory } from "../../deps.ts";
+import { dag } from "../../sdk/client.gen.ts";
 import { getDirectory } from "./lib.ts";
 
 export enum Job {
@@ -20,37 +20,23 @@ export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
  */
 export async function test(
   src: string | Directory | undefined = ".",
-  bunVersion?: string
+  bunVersion = "latest"
 ): Promise<string> {
-  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.25";
-  let result = "";
-  await connect(async (client: Client) => {
-    const context = await getDirectory(client, src);
-    const ctr = client
-      .pipeline(Job.test)
-      .container()
-      .from("pkgxdev/pkgx:latest")
-      .withExec(["apt-get", "update"])
-      .withExec(["apt-get", "install", "-y", "ca-certificates"])
-      .withExec([
-        "pkgx",
-        "install",
-        `node@${NODE_VERSION}`,
-        `bun@${BUN_VERSION}`,
-      ])
-      .withMountedCache(
-        "/root/.bun/install/cache",
-        client.cacheVolume("bun-cache")
-      )
-      .withMountedCache("/app/node_modules", client.cacheVolume("node_modules"))
-      .withDirectory("/app", context, { exclude })
-      .withWorkdir("/app")
-      .withExec(["bun", "install"])
-      .withExec(["bun", "test"]);
+  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion;
+  const context = await getDirectory(src);
+  const ctr = dag
+    .pipeline(Job.test)
+    .container()
+    .from("pkgxdev/pkgx:latest")
+    .withExec(["apt-get", "update"])
+    .withExec(["apt-get", "install", "-y", "ca-certificates"])
+    .withExec(["pkgx", "install", `node@${NODE_VERSION}`, `bun@${BUN_VERSION}`])
+    .withDirectory("/app", context, { exclude })
+    .withWorkdir("/app")
+    .withExec(["bun", "install"])
+    .withExec(["bun", "test"]);
 
-    result = await ctr.stdout();
-  });
-  return result;
+  return ctr.stdout();
 }
 
 /**
@@ -64,45 +50,36 @@ export async function test(
 export async function run(
   command: string,
   src: string | Directory | undefined = ".",
-  bunVersion?: string
+  bunVersion = "latest"
 ): Promise<string> {
-  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion || "1.0.3";
-  let result = "";
-  await connect(async (client: Client) => {
-    const context = await getDirectory(client, src);
-    let ctr = client
-      .pipeline(Job.run)
-      .container()
-      .from("pkgxdev/pkgx:latest")
-      .withExec(["apt-get", "update"])
-      .withExec(["apt-get", "install", "-y", "ca-certificates"])
-      .withExec([
-        "pkgx",
-        "install",
-        `node@${NODE_VERSION}}`,
-        `bun@${BUN_VERSION}`,
-      ])
-      .withMountedCache(
-        "/root/.bun/install/cache",
-        client.cacheVolume("bun-cache")
-      )
-      .withMountedCache("/app/node_modules", client.cacheVolume("node_modules"))
-      .withDirectory("/app", context, { exclude })
-      .withWorkdir("/app")
-      .withExec(["bun", "install"])
-      .withExec(["bun", "run", command]);
+  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion;
+  const context = await getDirectory(src);
+  let ctr = dag
+    .pipeline(Job.run)
+    .container()
+    .from("pkgxdev/pkgx:latest")
+    .withExec(["apt-get", "update"])
+    .withExec(["apt-get", "install", "-y", "ca-certificates"])
+    .withExec([
+      "pkgx",
+      "install",
+      `node@${NODE_VERSION}}`,
+      `bun@${BUN_VERSION}`,
+    ])
+    .withDirectory("/app", context, { exclude })
+    .withWorkdir("/app")
+    .withExec(["bun", "install"])
+    .withExec(["bun", "run", command]);
 
-    if (command === "build") {
-      ctr = ctr
-        .withExec(["mkdir", "-p", "/app/dist"])
-        .withExec(["mkdir", "-p", "/app/build"]);
-      await ctr.directory("/app/dist").export("./dist");
-      await ctr.directory("/app/build").export("./build");
-    }
+  if (command === "build") {
+    ctr = ctr
+      .withExec(["mkdir", "-p", "/app/dist"])
+      .withExec(["mkdir", "-p", "/app/build"]);
+    await ctr.directory("/app/dist").export("./dist");
+    await ctr.directory("/app/build").export("./build");
+  }
 
-    result = await ctr.stdout();
-  });
-  return result;
+  return ctr.stdout();
 }
 
 export type JobExec =
