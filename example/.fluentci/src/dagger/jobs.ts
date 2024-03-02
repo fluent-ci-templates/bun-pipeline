@@ -1,3 +1,8 @@
+/**
+ * @module bun
+ * @description Provides a set of functions for Bun projects
+ */
+
 import { Directory } from "../../deps.ts";
 import { dag } from "../../sdk/client.gen.ts";
 import { getDirectory } from "./lib.ts";
