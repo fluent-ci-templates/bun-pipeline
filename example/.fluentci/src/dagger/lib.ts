@@ -1,5 +1,4 @@
-import { Directory, DirectoryID } from "../../deps.ts";
-import { dag } from "../../sdk/client.gen.ts";
+import { Directory, DirectoryID, dag } from "../../deps.ts";
 
 export const getDirectory = async (
   src: string | Directory | undefined = "."

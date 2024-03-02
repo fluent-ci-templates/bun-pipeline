@@ -38,7 +38,7 @@ Or simply:
 fluentci
 ```
 
-## Dagger Module
+## 🧩 Dagger Module
 
 Use as a [Dagger](https://dagger.io) Module:
 
@@ -53,14 +53,14 @@ dagger call test --src .
 dagger call run --command build --src .
 ```
 
-## Environment variables
+## 🛠️ Environment variables
 
 | Variable     | Description                                      |
 | ------------ | ------------------------------------------------ |
 | NODE_VERSION | The Node.js version to use. Defaults to `18.16.1`|
 | BUN_VERSION  | The Bun version to use. Defaults to `latest`      |
 
-## Jobs
+## ✨ Jobs
 
 | Job    | Description         |
 | ------ | ------------------- |
@@ -81,12 +81,12 @@ run(
 
 ```
 
-## Programmatic usage
+## 👨‍💻 Programmatic usage
 
 You can also use this pipeline programmatically:
 
 ```ts
-import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.6.8/mod.ts";
+import { test } from "jsr:@fluentci/bun";
 
 await test();
 ```
