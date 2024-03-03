@@ -1,3 +1,3 @@
-import { test } from "https://pkg.fluentci.io/bun_pipeline@v0.6.8/mod.ts";
+import { test } from "jsr:@fluentci/bun";
 
 await test();

@@ -3,7 +3,7 @@
  * @description Provides a set of functions for Bun projects
  */
 
-import { Directory, dag } from "../../deps.ts";
+import { Directory, dag, env } from "../../deps.ts";
 import { getDirectory } from "./lib.ts";
 
 export enum Job {
@@ -11,7 +11,7 @@ export enum Job {
   run = "run",
 }
 
-const NODE_VERSION = Deno.env.get("NODE_VERSION") || "18.16.1";
+const NODE_VERSION = env.get("NODE_VERSION") || "18.16.1";
 
 export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
 
@@ -26,7 +26,7 @@ export async function test(
   src: string | Directory | undefined = ".",
   bunVersion = "latest"
 ): Promise<string> {
-  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion;
+  const BUN_VERSION = env.get("BUN_VERSION") || bunVersion;
   const context = await getDirectory(src);
   const ctr = dag
     .pipeline(Job.test)
@@ -56,7 +56,7 @@ export async function run(
   src: string | Directory | undefined = ".",
   bunVersion = "latest"
 ): Promise<string> {
-  const BUN_VERSION = Deno.env.get("BUN_VERSION") || bunVersion;
+  const BUN_VERSION = env.get("BUN_VERSION") || bunVersion;
   const context = await getDirectory(src);
   let ctr = dag
     .pipeline(Job.run)
