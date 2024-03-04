@@ -4,6 +4,7 @@
 [![deno module](https://shield.deno.dev/x/bun_pipeline)](https://deno.land/x/bun_pipeline)
 ![deno compatibility](https://shield.deno.dev/deno/^1.41)
 [![dagger-min-version](https://img.shields.io/badge/dagger-v0.10.0-blue?color=3D66FF&labelColor=000000)](https://dagger.io)
+[![](https://jsr.io/badges/@fluentci/bun)](https://jsr.io/@fluentci/bun)
 [![codecov](https://img.shields.io/codecov/c/gh/fluent-ci-templates/bun-pipeline)](https://codecov.io/gh/fluent-ci-templates/bun-pipeline)
 [![ci](https://github.com/fluent-ci-templates/bun-pipeline/actions/workflows/ci.yml/badge.svg)](https://github.com/fluent-ci-templates/bun-pipeline/actions/workflows/ci.yml)
 
