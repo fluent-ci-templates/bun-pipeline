@@ -40,7 +40,9 @@ export async function test(
     .withExec(["bun", "install"])
     .withExec(["bun", "test"]);
 
-  return ctr.stdout();
+  const stdout = await ctr.stdout();
+  const stderr = await ctr.stderr();
+  return stdout + '\n' + stderr;
 }
 
 /**

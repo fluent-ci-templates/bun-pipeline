@@ -16,6 +16,8 @@ const NODE_VERSION = env.get("NODE_VERSION") || "18.16.1";
 export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
 
 /**
+ * Run tests
+ *
  * @function
  * @description Run tests
  * @param {string | Directory | undefined} src
@@ -40,10 +42,14 @@ export async function test(
     .withExec(["bun", "install"])
     .withExec(["bun", "test"]);
 
-  return ctr.stdout();
+  const stdout = await ctr.stdout();
+  const stderr = await ctr.stderr();
+  return stdout + '\n' + stderr;
 }
 
 /**
+ *  Run commands
+ *  
  * @function
  * @description Run commands
  * @param {string} command
@@ -83,7 +89,9 @@ export async function run(
     await ctr.directory("/app/build").export("./build");
   }
 
-  return ctr.stdout();
+  const stdout = await ctr.stdout();
+  const stderr = await ctr.stderr();
+  return stdout + '\n' + stderr;
 }
 
 export type JobExec =
