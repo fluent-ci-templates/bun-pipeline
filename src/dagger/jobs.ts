@@ -8,6 +8,7 @@ import { getDirectory } from "./lib.ts";
 
 export enum Job {
   test = "test",
+  build = "build",
   run = "run",
 }
 
@@ -26,7 +27,7 @@ export const exclude = [".git", ".devbox", "node_modules", ".fluentci"];
  */
 export async function test(
   src: string | Directory | undefined = ".",
-  bunVersion = "latest"
+  bunVersion: string = "latest"
 ): Promise<string> {
   const BUN_VERSION = env.get("BUN_VERSION") || bunVersion;
   const context = await getDirectory(src);
@@ -44,12 +45,12 @@ export async function test(
 
   const stdout = await ctr.stdout();
   const stderr = await ctr.stderr();
-  return stdout + '\n' + stderr;
+  return stdout + "\n" + stderr;
 }
 
 /**
  *  Run commands
- *  
+ *
  * @function
  * @description Run commands
  * @param {string} command
@@ -60,7 +61,7 @@ export async function test(
 export async function run(
   command: string,
   src: string | Directory | undefined = ".",
-  bunVersion = "latest"
+  bunVersion: string = "latest"
 ): Promise<string> {
   const BUN_VERSION = env.get("BUN_VERSION") || bunVersion;
   const context = await getDirectory(src);
@@ -91,19 +92,117 @@ export async function run(
 
   const stdout = await ctr.stdout();
   const stderr = await ctr.stderr();
-  return stdout + '\n' + stderr;
+  return stdout + "\n" + stderr;
+}
+
+/**
+ * Transpile and bundle one or more files
+ *
+ * @function
+ * @description Transpile and bundle one or more files
+ */
+export async function build(
+  src: string | Directory | undefined = ".",
+  entrypoints: string[] = ["index.ts"],
+  outfile?: string,
+  bunVersion: string = "latest",
+  target?: string,
+  compile: boolean = false,
+  outdir?: string,
+  sourcemap?: string,
+  minify: boolean = false,
+  minifySyntax: boolean = false,
+  minifyWhitespace: boolean = false,
+  minifyIdentifiers: boolean = false,
+  splitting: boolean = false
+): Promise<Directory | string> {
+  const args: string[] = [];
+  if (compile) {
+    args.push("--compile");
+  }
+  if (target) {
+    args.push("--target", target);
+  }
+  if (outdir) {
+    args.push("--outdir", outdir);
+  }
+  if (outfile) {
+    args.push("--outfile", outfile);
+  }
+  if (sourcemap) {
+    args.push("--sourcemap", sourcemap);
+  }
+  if (minify) {
+    args.push("--minify");
+  }
+  if (minifySyntax) {
+    args.push("--minify-syntax");
+  }
+  if (minifyWhitespace) {
+    args.push("--minify-whitespace");
+  }
+  if (minifyIdentifiers) {
+    args.push("--minify-identifiers");
+  }
+  if (splitting) {
+    args.push("--splitting");
+  }
+
+  const BUN_VERSION = env.get("BUN_VERSION") || bunVersion;
+  const context = await getDirectory(src);
+  const ctr = dag
+    .pipeline(Job.build)
+    .container()
+    .from("pkgxdev/pkgx:latest")
+    .withExec(["apt-get", "update"])
+    .withExec(["apt-get", "install", "-y", "ca-certificates"])
+    .withExec(["pkgx", "install", `node@${NODE_VERSION}`, `bun@${BUN_VERSION}`])
+    .withDirectory("/app", context, { exclude })
+    .withWorkdir("/app")
+    .withExec(["bun", "install"])
+    .withExec(["bun", "build", ...entrypoints, ...args])
+    .withExec(["mkdir", "-p", "/app/dist"])
+    .withExec([
+      "sh",
+      "-c",
+      `[ -f ${outfile} ] && cp ${outfile} /app/dist ; exit 0`,
+    ]);
+
+  await ctr.stdout();
+
+  await ctr
+    .directory(`/app/${outdir || "dist"}`)
+    .export(`./${outdir || "dist"}`);
+  return ctr.directory(`/app/${outdir || "dist"}`).id();
 }
 
 export type JobExec =
   | ((src?: string, bunVersion?: string) => Promise<string>)
-  | ((command: string, src?: string, bunVersion?: string) => Promise<string>);
+  | ((command: string, src?: string, bunVersion?: string) => Promise<string>)
+  | ((
+      src: string | Directory | undefined,
+      entrypoints: string[],
+      outfile?: string,
+      bunVersion?: string,
+      target?: string,
+      compile?: boolean,
+      outdir?: string,
+      sourcemap?: string,
+      minify?: boolean,
+      minifySyntax?: boolean,
+      minifyWhitespace?: boolean,
+      minifyIdentifiers?: boolean,
+      splitting?: boolean
+    ) => Promise<Directory | string>);
 
 export const runnableJobs: Record<Job, JobExec> = {
   [Job.test]: test,
+  [Job.build]: build,
   [Job.run]: run,
 };
 
 export const jobDescriptions: Record<Job, string> = {
   [Job.test]: "Run tests",
+  [Job.build]: "Transpile and bundle one or more files",
   [Job.run]: "Run a command",
 };

@@ -1,6 +1,6 @@
 {
   "name": "@fluentci/bun",
-  "version": "0.6.12",
+  "version": "0.6.13",
   "exports": "./mod.ts",
   "importMap": "import_map.json",
   "tasks": {

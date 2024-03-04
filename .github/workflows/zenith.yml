@@ -19,6 +19,8 @@ jobs:
       - name: Run Dagger Pipelines
         run: |
           dagger call test --src .
+          dagger call build --src . --compile --outfile example --entrypoints index.ts
+          dagger call build --src . --outfile index.js --entrypoints index.ts
         working-directory: example
         env:
           DAGGER_CLOUD_TOKEN: ${{ secrets.DAGGER_CLOUD_TOKEN }}

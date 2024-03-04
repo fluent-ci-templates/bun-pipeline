@@ -50,7 +50,13 @@ dagger install github.com/fluent-ci-templates/bun-pipeline@main
 Call a function from the module:
 
 ```bash
+dagger call build --src . \
+  --compile \
+  --outfile example \
+  --entrypoints index.ts
+
 dagger call test --src .
+
 dagger call run --command build --src .
 ```
 
@@ -63,19 +69,36 @@ dagger call run --command build --src .
 
 ## ✨ Jobs
 
-| Job    | Description         |
-| ------ | ------------------- |
-| run    | Run a command       |
-| test   | Run the tests       |
+| Job    | Description                            |
+| ------ | -------------------------------------- |
+| build  | Transpile and bundle one or more files |
+| run    | Run a command                          |
+| test   | Run the tests                          |
 
 ```typescript
-test(
+build(
+  src: string | Directory | undefined = ".",
+  entrypoints: string[] = ["index.ts"],
+  outfile?: string,
+  bunVersion: string = "latest",
+  target?: string,
+  compile: boolean = false,
+  outdir?: string,
+  sourcemap?: string,
+  minify: boolean = false,
+  minifySyntax: boolean = false,
+  minifyWhitespace: boolean = false,
+  minifyIdentifiers: boolean = false,
+  splitting: boolean = false
+): Promise<Directory | string>
+
+run(
+  command: string,
   src: string | Directory | undefined = ".",
   bunVersion: string = "latest"
 ): Promise<string>
 
-run(
-  command: string,
+test(
   src: string | Directory | undefined = ".",
   bunVersion: string = "latest"
 ): Promise<string>
