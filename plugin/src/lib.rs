@@ -18,7 +18,7 @@ pub fn build(args: String) -> FnResult<String> {
     let stdout = dag()
         .pipeline("test")?
         .pkgx()?
-        .with_exec(vec!["pkgx", "install", "node", "bun"])?
+        .with_packages(vec!["node", "bun"])?
         .with_exec(vec!["bun", "install"])?
         .with_exec(vec!["bun", "build", &args])?
         .stdout()?;
@@ -30,7 +30,7 @@ pub fn run(args: String) -> FnResult<String> {
     let stdout = dag()
         .pipeline("test")?
         .pkgx()?
-        .with_exec(vec!["pkgx", "install", "node", "bun"])?
+        .with_packages(vec!["node", "bun"])?
         .with_exec(vec!["bun", "install"])?
         .with_exec(vec!["bun", "run", &args])?
         .stdout()?;
