@@ -47,8 +47,19 @@ pub fn bunx(args: String) -> FnResult<String> {
         .pkgx()?
         .with_exec(vec!["type node > /dev/null || pkgx install node"])?
         .with_packages(vec!["bun"])?
-        .with_exec(vec!["bun", "install"])?
         .with_exec(vec!["bunx", &args])?
+        .stdout()?;
+    Ok(stdout)
+}
+
+#[plugin_fn]
+pub fn install(args: String) -> FnResult<String> {
+    let stdout = dag()
+        .pipeline("install")?
+        .pkgx()?
+        .with_exec(vec!["type node > /dev/null || pkgx install node"])?
+        .with_packages(vec!["bun"])?
+        .with_exec(vec!["bun", "install", &args])?
         .stdout()?;
     Ok(stdout)
 }
