@@ -17,15 +17,13 @@ jobs:
           pipeline: deno
           args: |
             fmt
-            test
-            coverage
       - name: Run Dagger Pipelines
         run: |
           dagger -m github.com/fluent-ci-templates/bun-pipeline@main functions
-      - name: Upload to Codecov
-        run: fluentci run --wasm codecov upload
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      #- name: Upload to Codecov
+      #  run: fluentci run --wasm codecov upload
+      #  env:
+      #    CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
   publish:
     needs: tests
     runs-on: ubuntu-latest

@@ -3,8 +3,8 @@
  * @description Provides a set of functions for Bun projects
  */
 
-import { Directory, dag, env } from "../../deps.ts";
-import { getDirectory } from "./lib.ts";
+import { type Directory, dag, env } from "../deps.ts";
+import { getDirectory } from "./helpers.ts";
 
 export enum Job {
   test = "test",
